@@ -1,21 +1,36 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import MainLayout from "./layout/MainLayout";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { AuthProvider } from "./context/AuthProvider";
+import { useAuthContext } from "./context/useAuthContext";
 
+import MainLayout from "./layout/MainLayout";
 import Main from "./pages/Main";
-// import Users from "./pages/Users";
-// import Settings from "./pages/Settings";
+import LoginPage from "./pages/LoginPage";
+import type { JSX } from "react/jsx-runtime";
+
+function PrivateRoute({ children }: { children: JSX.Element }) {
+  const { isLoggedIn } = useAuthContext();
+  return isLoggedIn ? children : <Navigate to="/login" />;
+}
 
 export default function App() {
   return (
-    <BrowserRouter>
-      <MainLayout>
+    <AuthProvider>
+      <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Main />} />
-          {/* <Route path="/users" element={<Users />} />
-          <Route path="/settings" element={<Settings />} /> */}
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <MainLayout />
+              </PrivateRoute>
+            }
+          >
+            <Route index element={<Main />} />
+          </Route>
+
+          <Route path="/login" element={<LoginPage />} />
         </Routes>
-      </MainLayout>
-    </BrowserRouter>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
-

@@ -1,5 +1,3 @@
 export default function Main() {
-  return (
-    <div className="flex h-screen">Main</div>
-  )
+  return <h1 className="text-2xl font-bold">Dashboard</h1>;
 }
