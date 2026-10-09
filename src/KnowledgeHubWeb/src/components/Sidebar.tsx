@@ -1,7 +1,12 @@
 import { Link } from "react-router-dom";
+import { useAuthContext } from "../context/useAuthContext";
 
 export default function Sidebar() {
-  return (
+  const { isLoggedIn } = useAuthContext();
+
+  if (!isLoggedIn) return null; // ← Sidebar znika gdy nie ma sesji
+
+ return (
     <aside className="w-64 bg-slate-800 text-white flex flex-col">
       <div className="px-4 py-3 border-b border-slate-700">
         <h1 className="text-lg font-semibold">MENU</h1>
